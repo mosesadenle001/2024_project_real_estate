@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="1fca03b2-2bbb-4dcc-8fe8-f9bc4b7b61a3" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project_real_estate/logs/real_estate.log" beforeDir="false" afterPath="$PROJECT_DIR$/project_real_estate/logs/real_estate.log" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -67,7 +66,7 @@
       <recent name="C:\Users\Eridas\real_estate\Real_Estate_Listings_Platform\final_project_real_estate_2024" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Real_Estate_Listings_Platform" />
       <option name="ENV_FILES" value="" />
