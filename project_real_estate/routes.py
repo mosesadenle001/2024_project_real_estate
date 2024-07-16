@@ -19,7 +19,6 @@ def home():
     listings = Listing.query.order_by(Listing.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', properties=properties, listings=listings)
 
-
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -47,7 +46,7 @@ def login():
             return redirect(next_page) if next_page else redirect(url_for('routes.home'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
-    return render_template('signup.html', title='Login', form=form, button_text="Login")
+    return render_template('login.html', title='Login', form=form, button_text="Login")
 
 @app.route("/logout")
 def logout():
