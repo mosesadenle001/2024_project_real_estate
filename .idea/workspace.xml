@@ -5,36 +5,44 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="1fca03b2-2bbb-4dcc-8fe8-f9bc4b7b61a3" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/config.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/docker-compose.yml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/forms.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/instance/db.sqlite" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/instance/site.db" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/logger.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/logs/real_estate.log" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/migrate_db.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/models.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/requirements.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/routes.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/run.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/static/css/styles.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/add_listing.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/compare.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/home.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/layout.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/listing.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/location.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/register.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/reset_password.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/search.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/signup_or_login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/templates/summit.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/app/utils.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/final_project_real_estate_2024/task_explanation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/final_project_real_estate_2024" beforeDir="false" afterPath="$PROJECT_DIR$/final_project_real_estate_2024" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/instance/real_estate_listings.db" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/config.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/docker-compose.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/forms.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/logger.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/logs/real_estate.log" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/migrate_db.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/models.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/requirements.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/static/css/styles.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/static/img/default.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/static/js/scripts.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/account.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/add_listing.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/add_location.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/add_property.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/compare.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/home.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/layout.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/listing.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/location.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/property.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/reset_password.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/search.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/templates/summit.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/project_real_estate/utils.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/task_explanation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/final_project_real_estate_2024" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,13 +53,13 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Dockerfile" />
-        <option value="HTML File" />
         <option value="Python Script" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/final_project_real_estate_2024" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -76,17 +84,21 @@
     "Python.config.executor": "Run",
     "Python.forms.executor": "Run",
     "Python.logger.executor": "Run",
+    "Python.main.executor": "Run",
     "Python.migrate_db.executor": "Run",
     "Python.models.executor": "Run",
     "Python.routes.executor": "Run",
+    "Python.run (1).executor": "Run",
     "Python.run.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main"
+    "git-widget-placeholder": "master",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Eridas\real_estate\Real_Estate_Listings_Platform" />
       <recent name="C:\Users\Eridas\real_estate\Real_Estate_Listings_Platform\final_project_real_estate_2024\app" />
       <recent name="C:\Users\Eridas\real_estate\Real_Estate_Listings_Platform\final_project_real_estate_2024" />
     </key>
@@ -127,7 +139,51 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\Eridas\real_estate\Real_Estate_Listings_Platform\final_project_real_estate_2024\app\run.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\Eridas\real_estate\Real_Estate_Listings_Platform\run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Real_Estate_Listings_Platform" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/final_project_real_estate_2024/app" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\Users\Eridas\real_estate\Real_Estate_Listings_Platform\final_project_real_estate_2024\run.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="Real_Estate_Listings_Platform" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/final_project_real_estate_2024" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="C:\Users\Eridas\real_estate\Real_Estate_Listings_Platform\run.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />

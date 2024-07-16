@@ -1,0 +1,16 @@
+import os
+class Config:
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL') or 'sqlite:///real_estate_listings.db'
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    MAIL_SERVER = 'smtp.googlemail.com'
+    MAIL_PORT = 587
+    MAIL_USE_TLS = True
+    MAIL_USERNAME = os.environ.get('EMAIL_USER')
+    MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
+
+
+    @staticmethod
+    def init_app(app):
+        # This method can be used to perform additional initializations for the app
+        pass
