@@ -1,5 +1,4 @@
-from flask import (render_template, url_for, flash, redirect, request,
-                   abort)
+from flask import (render_template, url_for, flash, redirect, request,abort)
 from project_real_estate import db, bcrypt,app
 from project_real_estate.forms import RegistrationForm, LoginForm, UpdateAccountForm, SubmitListingForm, PropertyForm, ResetPasswordForm, ListingForm, LocationForm
 from project_real_estate.models import User, Property, Listing, Location
@@ -22,7 +21,7 @@ def home():
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('routes.home'))
+        return redirect(url_for('home'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -30,20 +29,21 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash('Your account has been created successfully')
-        return redirect(url_for('routes.login'))
-    return render_template('register.html', title='R', form=form, button_text="Register")
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form, button_text="Register")
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('routes.home'))
+        return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user, remember=form.remember.data)
             next_page = request.args.get('next')
-            return redirect(next_page) if next_page else redirect(url_for('routes.home'))
+            return redirect(next_page) if next_page \
+                else redirect(url_for('routes.home'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form, button_text="Login")
@@ -51,7 +51,7 @@ def login():
 @app.route("/logout")
 def logout():
     logout_user()
-    return redirect(url_for('routes.home'))
+    return redirect(url_for('home'))
 
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
@@ -62,7 +62,7 @@ def account():
         current_user.email = form.email.data
         db.session.commit()
         flash('Your account has been updated successfully')
-        return redirect(url_for('routes.account'))
+        return redirect(url_for('account'))
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.email.data = current_user.email
@@ -92,8 +92,8 @@ def new_property():
         db.session.add(property)
         db.session.commit()
         flash('Your property has been created!', 'success')
-        return redirect(url_for('routes.home'))
-    return render_template('add_listing.html', title='New Property', form=form)
+        return redirect(url_for('home'))
+    return render_template('create_listing.html', title='New Property', form=form)
 
 @app.route("/listing/new", methods=['GET', 'POST'])
 @login_required
@@ -104,8 +104,8 @@ def new_listing():
         db.session.add(listing)
         db.session.commit()
         flash('Your listing has been created!', 'success')
-        return redirect(url_for('main.home'))
-    return render_template('add_listing.html', title='New Listing', form=form, legend='New Listing')
+        return redirect(url_for('home'))
+    return render_template('create_listing.html', title='New Listing', form=form, legend='New Listing')
 
 @app.route("/location/new", methods=['GET', 'POST'])
 @login_required
@@ -116,8 +116,8 @@ def new_location():
         db.session.add(location)
         db.session.commit()
         flash('Your location has been added!', 'success')
-        return redirect(url_for('main.home'))
-    return render_template('add_location.html', title='New Location', form=form)
+        return redirect(url_for('home'))
+    return render_template('create_location.html', title='New Location', form=form)
 
 @app.route("/search_by_location")
 def search_by_location():
@@ -144,7 +144,7 @@ def update_property(property_id):
         form.description.data = property.description
         form.price.data = property.price
         form.location.data = property.location
-    return render_template('add_listing.html', title='Update Property', form=form)
+    return render_template('create_listing.html', title='Update Property', form=form)
 
 @app.route("/property/<int:property_id>/delete", methods=['POST'])
 @login_required
@@ -155,7 +155,7 @@ def delete_property(property_id):
     db.session.delete(property)
     db.session.commit()
     flash('Your property has been deleted successful')
-    return redirect(url_for('routes.home'))
+    return redirect(url_for('home'))
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
@@ -169,27 +169,6 @@ def search():
 def compare():
     properties = Property.query.all()
     return render_template('compare.html', properties=properties)
-
-@app.route("/export_csv")
-@login_required
-def export_csv():
-    properties = Property.query.all()
-    data = [{
-        'Title': property.title,
-        'Description': property.description,
-        'Price': property.price,
-        'Location': property.location,
-        'Date Posted': property.date_posted,
-        'Owner': property.owner.username
-    }
-        for property in properties]
-    df = pd.DataFrame(data)
-    df.to_csv('properties.csv', index=False)
-    flash('Properties have been exported to CSV!', 'success')
-    return redirect(url_for('routes.home'))
-
-    mail.send(msg)
-
 def reset_password():
     form = ResetPasswordForm()
     if form.validate_on_submit():
@@ -197,11 +176,10 @@ def reset_password():
         if user:
             send_reset_email(user)
             flash('An email has been sent with instructions to reset your password.', 'info')
-            return redirect(url_for('routes.login'))
+            return redirect(url_for('login'))
         else:
             flash('No account found with that email.')
     return render_template('reset_password.html', title='Reset Password', form=form)
-
 
 @app.route("/submit", methods=['GET', 'POST'])
 @login_required
@@ -217,5 +195,25 @@ def submit():
         db.session.add(listing)
         db.session.commit()
         flash('Your listing has been submitted!', 'success')
-        return redirect(url_for('main.home'))
+        return redirect(url_for('home'))
     return render_template('submit.html', title='Submit Listing', form=form)
+
+# @app.route("/export_csv")
+# @login_required
+# def export_csv():
+#     properties = Property.query.all()
+#     data = [{
+#         'Title': property.title,
+#         'Description': property.description,
+#         'Price': property.price,
+#         'Location': property.location,
+#         'Date Posted': property.date_posted,
+#         'Owner': property.owner.username
+#     }
+#         for property in properties]
+#     df = pd.DataFrame(data)
+#     df.to_csv('properties.csv', index=False)
+#     flash('Properties have been exported to CSV!', 'success')
+#     return redirect(url_for('home'))
+#
+#     mail.send(msg)

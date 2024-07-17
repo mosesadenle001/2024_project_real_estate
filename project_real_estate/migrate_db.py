@@ -20,11 +20,11 @@ def create_data():
         print(property)
 
 
-# if __name__ == "__main__":
-#
-#     project_real_estate = db()
-#     with project_real_estate.app_context():
-#         create_data()
+if __name__ == "__main__":
+
+    project_real_estate = db()
+    with project_real_estate.app_context():
+        create_data()
 
 
 
