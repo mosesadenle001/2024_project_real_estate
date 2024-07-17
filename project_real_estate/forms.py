@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm
 from flask import flash
 from wtforms import StringField, IntegerField, DecimalField, PasswordField, SubmitField, BooleanField, TextAreaField, FloatField,SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
-from project_real_estate.models import User   #project_real_estate
+from project_real_estate.models import User
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=25)])
@@ -23,7 +23,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError('That email has been used. Please choose a different one.')
 
 class LoginForm(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)]) #should not inclu
+    #username = StringField('Username', validators=[DataRequired(), Length(min=2, max=30)]) #should not inclu
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
     remember = BooleanField('Remember Me')

@@ -1,28 +1,38 @@
 {% extends "layout.html" %}
-
+{% block title %}Home{% endblock %}
 {% block content %}
-    <h1>Home Page</h1>
-
-    <h2>Properties</h2>
-    {% for property in properties %}
-        <div>
-            <h3>{{ property.title }}</h3>
-            <p><strong>Location:</strong> {{ property.location.name }}</p>
-            <p><strong>Price:</strong> ${{ property.price }}</p>
+    <h1>Koredes Property Listings Platform</h1>
+    {% for property in properties.items %}
+        <div class="property">
+            <h2><a href="{{ url_for('property', property_id=property.id) }}">{{ property.title }}</a></h2>
             <p>{{ property.description }}</p>
-            <p><small>{{ property.date_posted.strftime('%Y-%m-%d') }}</small></p>
-            <!-- Add more details or links if needed -->
+            <p>Price: {{ property.price }}</p>
+            <p>Location: {{ property.location }}</p>
+            <p>Date Posted: {{ property.date_posted.strftime('%Y-%m-%d') }}</p>
+            <p>Owner: {{ property.owner.username }}</p>
         </div>
     {% endfor %}
+    {% if properties.has_prev %}
+        <a href="{{ url_for('home', page=properties.prev_num) }}">Previous</a>
+    {% endif %}
+    {% if properties.has_next %}
+        <a href="{{ url_for('home', page=properties.next_num) }}">Next</a>
+    {% endif %}
 
-    <h2>Listings</h2>
-    {% for listing in listings %}
-        <div>
-            <h3>{{ listing.title }}</h3>
-            <p><strong>Location:</strong> {{ listing.location }}</p>
+    <h1>Listings</h1>
+    {% for listing in listings.items %}
+        <div class="listing">
+            <h2><a href="{{ url_for('listing', listing_id=listing.id) }}">{{ listing.title }}</a></h2>
             <p>{{ listing.content }}</p>
-            <p><small>{{ listing.date_posted.strftime('%Y-%m-%d') }}</small></p>
-            <img src="{{ url_for('static', filename='img/default.jpg') }}" alt="No Image Available">
+            <p>Location: {{ listing.location }}</p>
+            <p>Date Posted: {{ listing.date_posted.strftime('%Y-%m-%d') }}</p>
+            <p>Author: {{ listing.author.username }}</p>
         </div>
     {% endfor %}
+    {% if listings.has_prev %}
+        <a href="{{ url_for('home', page=listings.prev_num) }}">Previous</a>
+    {% endif %}
+    {% if listings.has_next %}
+        <a href="{{ url_for('home', page=listings.next_num) }}">Next</a>
+    {% endif %}
 {% endblock %}

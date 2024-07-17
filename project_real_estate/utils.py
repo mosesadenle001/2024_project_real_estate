@@ -33,4 +33,3 @@ def send_reset_email(user):
 #     i.save(picture_path)
 #
 #     return picture_fn
-

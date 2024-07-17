@@ -64,4 +64,3 @@ class Location(db.Model):
     listings = db.relationship('Listing', backref='location', lazy=True)
     def __repr__(self):
         return f"Location('{self.name}', '{self.description}')"
-

@@ -5,118 +5,79 @@ body {
     padding: 0;
 }
 
-nav {
+header {
     background-color: #343a40;
-    padding: 1rem;
+    color: white;
+    padding: 10px 0;
 }
 
 nav ul {
-    list-style: none;
-    padding: 0;
+    list-style-type: none;
     margin: 0;
+    padding: 0;
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 }
 
 nav ul li {
-    display: inline;
+    margin: 0 15px;
 }
 
 nav ul li a {
-    color: #fff;
+    color: white;
     text-decoration: none;
     font-weight: bold;
 }
 
-.container {
-    max-width: 960px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+nav ul li a:hover {
+    text-decoration: underline;
 }
 
-h1, h2, h3 {
-    color: #343a40;
-}
-
-.listing {
-    margin-bottom: 2rem;
-    padding: 1rem;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
+main {
+    padding: 20px;
 }
 
 .alert {
-    padding: 1rem;
-    margin-bottom: 1rem;
-    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
 }
 
 .alert-success {
     background-color: #d4edda;
-    border-color: #c3e6cb;
     color: #155724;
+}
+
+.alert-info {
+    background-color: #d1ecf1;
+    color: #0c5460;
 }
 
 .alert-danger {
     background-color: #f8d7da;
-    border-color: #f5c6cb;
     color: #721c24;
 }
 
-form div {
-    margin-bottom: 1rem;
-}
-
-form div label {
-    display: block;
-    margin-bottom: 0.5rem;
-}
-
-form div input[type="text"],
-form div input[type="email"],
-form div input[type="password"],
-form div textarea {
-    width: 100%;
-    padding: 0.5rem;
+.property, .listing {
     border: 1px solid #dee2e6;
+    background-color: white;
+    padding: 15px;
+    margin-bottom: 15px;
     border-radius: 5px;
 }
 
-form div input[type="submit"] {
-    padding: 0.5rem 1rem;
-    background-color: #007bff;
-    border: none;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
+.property h2, .listing h2 {
+    margin-top: 0;
 }
 
-form div input[type="submit"]:hover {
-    background-color: #0056b3;
+.property p, .listing p {
+    margin: 5px 0;
 }
 
-.error {
-    color: red;
-    font-size: 0.875rem;
-}
-
-.pagination {
-    margin: 20px 0;
-    display: flex;
-    justify-content: space-between;
-}
-
-.pagination a {
-    text-decoration: none;
-    padding: 10px 20px;
+a {
     color: #007bff;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
+    text-decoration: none;
 }
 
-.pagination a:hover {
-    background-color: #f8f9fa;
+a:hover {
+    text-decoration: underline;
 }
-

@@ -1,6 +1,25 @@
-{% extends "layout.html" %}
+<!--{% extends "layout.html" %}-->
+<!--{% block content %}-->
+<!--  <h1>Welcome to Real Estate Listings</h1>-->
+<!--  <p>Find your dream home</p>-->
+<!--  <a href="{{ url_for('search') }}">Search Listings</a>-->
+<!--{% endblock %}-->
+
+
+{% extends "base.html" %}
+{% block title %}Welcome{% endblock %}
 {% block content %}
-  <h1>Welcome to Real Estate Listings</h1>
-  <p>Find your dream home</p>
-  <a href="{{ url_for('search') }}">Search Listings</a>
+    <h1>Welcome to Real Estate Listings</h1>
+    <p>Find your dream property today. Browse our latest listings and properties.</p>
+    <div class="latest-listings">
+        <h2>Latest Listings</h2>
+        {% for listing in listings.items %}
+            <div class="card">
+                <a href="{{ url_for('search') }}">Search Listings</a>-->
+                <a href="{{ url_for('location') }}">Location Listings</a>-->
+                <p>{{ listing.content }}</p>
+                <p><strong>Price:</strong> ${{ listing.price }}</p>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}

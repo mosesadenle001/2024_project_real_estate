@@ -34,4 +34,3 @@ mail.init_app(app)
 migrate.init_app(app, db)  # Correctly initialize the migration with project_real_estate and db
 
 from project_real_estate import routes
-
