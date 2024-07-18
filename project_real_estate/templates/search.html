@@ -4,7 +4,7 @@
 
 {% block content %}
     <h2>Search Properties</h2>
-    <form method="GET" action="{{ url_for('search') }}">
+    <form method="POST" action="{{ url_for('search') }}">
         <div class="form-group">
             <label for="location">Location</label>
             <input type="text" id="location" name="location" class="form-control" placeholder="Enter a location...">
@@ -22,7 +22,7 @@
                 <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/' ~ result.image_file) }}" alt="Property Image">
                 <div class="media-body">
                     <h2>{{ result.title }}</h2>
-                    <p>{{ result.content }}</p>
+                    <p>{{ result.description }}</p>
                     <ul>
                         <li>Location: {{ result.location }}</li>
                         <li>Price: ${{ result.price }}</li>

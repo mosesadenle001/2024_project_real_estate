@@ -14,9 +14,10 @@ from project_real_estate.utils import send_reset_email
 @app.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    properties = Property.query.order_by(Property.date_posted.desc()).paginate(page=page, per_page=5)
+    props = Property.query.all()
+    #props = Property.query.order_by(Property.date_posted.desc()).paginate(page=page, per_page=5)
     #listings = Listing.query.order_by(Listing.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('home.html', properties=properties)
+    return render_template('home.html', properties=props)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -149,7 +150,7 @@ def search():
     if request.method == 'POST':
         location = request.form.get('location')
         properties = Property.query.filter(Property.location.ilike(f'%{location}%')).all()
-        return render_template('location.html', properties=properties, location=location)
+        return render_template('search.html', results=properties, location=location)
     return render_template('search.html')
 
 @app.route("/compare", methods=['GET', 'POST'])
@@ -171,7 +172,7 @@ def reset_password():
 # @app.route("/submit", methods=['GET', 'POST'])
 # @login_required
 # def submit():
-#     form = SubmitPropertyForm()
+#     form = PropertyForm()
 #     if form.validate_on_submit():
 #         property = Property(title=form.title.data,
 #                             location=form.location.data,

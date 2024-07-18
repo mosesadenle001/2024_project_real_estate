@@ -46,17 +46,11 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That email has been used. Please choose a different one.')
 
-class ListingForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired(), Length(max=100)])
-    location = StringField('Location', validators=[DataRequired(), Length(max=100)])
-    content = TextAreaField('Content', validators=[DataRequired()])
-    submit = SubmitField('Add Listing')
 
 class CompareForm(FlaskForm):
-    listing1 = SelectField('Listing 1', validators=[DataRequired()])
-    listing2 = SelectField('Listing 2', validators=[DataRequired()])
+    properties1 = SelectField('properties1', validators=[DataRequired()])
+    properties2 = SelectField('Properties2', validators=[DataRequired()])
     submit = SubmitField('Compare')
-
 class LocationForm(FlaskForm):
     name = StringField('Location Name', validators=[DataRequired(), Length(max=100)])
     description = TextAreaField('Description', validators=[DataRequired()])
@@ -89,11 +83,11 @@ class SearchForm(FlaskForm):
     search_query = StringField('Search', validators=[DataRequired()])
     submit = SubmitField('Search')
 
-class SubmitListingForm(FlaskForm):
+class SubmitPropertiesForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
     price = DecimalField('Price', validators=[DataRequired()])
     bedrooms = IntegerField('Bedrooms', validators=[DataRequired()])
     bathrooms = IntegerField('Bathrooms', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    submit = SubmitField('Submit Listing')
+    submit = SubmitField('Submit Properties')

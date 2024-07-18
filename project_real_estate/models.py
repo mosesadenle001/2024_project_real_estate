@@ -44,13 +44,14 @@ class Property(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    property = db.relationship('Location', backref='properties', lazy=True)
     def __repr__(self):
         return f"Property('{self.title}', '{self.date_posted}')"
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
     description = db.Column(db.Text, nullable=False)
-    property = db.relationship('property', backref='location', lazy=True)
+    property = db.relationship('Property', backref='location', lazy=True)
     def __repr__(self):
         return f"Location('{self.name}', '{self.description}')"
 
