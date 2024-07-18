@@ -1,38 +1,30 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
-    <h1>Koredes Property Listings Platform</h1>
+    <h2>Latest Listings</h2>
     {% for property in properties.items %}
-        <div class="property">
-            <h2><a href="{{ url_for('property', property_id=property.id) }}">{{ property.title }}</a></h2>
-            <p>{{ property.description }}</p>
-            <p>Price: {{ property.price }}</p>
-            <p>Location: {{ property.location }}</p>
-            <p>Date Posted: {{ property.date_posted.strftime('%Y-%m-%d') }}</p>
-            <p>Owner: {{ property.owner.username }}</p>
-        </div>
+        <article class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/' ~ property.image_file) }}">
+            <div class="media-body">
+                <div class="article-metadata">
+                    <h2>{{ property.title }}</h2>
+                    <small>Posted on {{ property.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+                <p>{{ property.description }}</p>
+                <ul>
+                    <li>Price: ${{ property.price }}</li>
+                    <li>Location: {{ property.location }}</li>
+                </ul>
+                <a href="{{ url_for('property', property_id=property.id) }}" class="btn btn-secondary">View Listing</a>
+            </div>
+        </article>
     {% endfor %}
-    {% if properties.has_prev %}
-        <a href="{{ url_for('home', page=properties.prev_num) }}">Previous</a>
-    {% endif %}
-    {% if properties.has_next %}
-        <a href="{{ url_for('home', page=properties.next_num) }}">Next</a>
-    {% endif %}
-
-    <h1>Listings</h1>
-    {% for listing in listings.items %}
-        <div class="listing">
-            <h2><a href="{{ url_for('listing', listing_id=listing.id) }}">{{ listing.title }}</a></h2>
-            <p>{{ listing.content }}</p>
-            <p>Location: {{ listing.location }}</p>
-            <p>Date Posted: {{ listing.date_posted.strftime('%Y-%m-%d') }}</p>
-            <p>Author: {{ listing.author.username }}</p>
-        </div>
-    {% endfor %}
-    {% if listings.has_prev %}
-        <a href="{{ url_for('home', page=listings.prev_num) }}">Previous</a>
-    {% endif %}
-    {% if listings.has_next %}
-        <a href="{{ url_for('home', page=listings.next_num) }}">Next</a>
-    {% endif %}
+    <div class="pagination">
+        {% if properties.has_prev %}
+            <a href="{{ url_for('home', page=properties.prev_num) }}">Previous</a>
+        {% endif %}
+        {% if properties.has_next %}
+            <a href="{{ url_for('home', page=properties.next_num) }}">Next</a>
+        {% endif %}
+    </div>
 {% endblock %}

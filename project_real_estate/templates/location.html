@@ -1,11 +1,14 @@
 {% extends "layout.html" %}
-{% block title %}{{ listing.title }}{% endblock %}
+{% block title %}Locations{% endblock %}
 {% block content %}
-    <h1>{{ listing.title }}</h1>
-    <p>{{ listing.content }}</p>
-    <p>Location: {{ listing.location }}</p>
-    <p>Price: ${{ listing.price }}</p>
-    <p>Property Type: {{ listing.property_type }}</p>
-    <small>Posted by {{ listing.author.username }} on {{ listing.date_posted.strftime('%Y-%m-%d') }}</small>
+    <h2>Locations</h2>
+    {% for location in locations %}
+        <div class="media content-section">
+            <div class="media-body">
+                <h2>{{ location.name }}</h2>
+                <p>{{ location.description }}</p>
+                <a href="{{ url_for('location', location_id=location.id) }}" class="btn btn-secondary">View Listings</a>
+            </div>
+        </div>
+    {% endfor %}
 {% endblock %}
-

@@ -1,13 +1,39 @@
 {% extends "layout.html" %}
+{% block title %}Compare Listings{% endblock %}
 {% block content %}
-  <h2>Compare Properties</h2>
-  {% for property in properties %}
-    <div>
-      <h3>{{ property.title }}</h3>
-      <p>{{ property.description }}</p>
-      <p>Price: {{ property.price }}</p>
-      <p>Location: {{ property.location }}</p>
-      <a href="{{ url_for('routes.property', property_id=property.id) }}">View Property</a>
-    </div>
-  {% endfor %}
+    <h2>Compare Listings</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.listing1.label }} {{ form.listing1(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.listing2.label }} {{ form.listing2(class="form-control") }}
+        </div>
+        <button type="submit" class="btn btn-primary">Compare</button>
+    </form>
+    {% if listing1 and listing2 %}
+        <div class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/' ~ listing1.image_file) }}">
+            <div class="media-body">
+                <h2>{{ listing1.title }}</h2>
+                <p>{{ listing1.content }}</p>
+                <ul>
+                    <li>Location: {{ listing1.location }}</li>
+                    <li>Price: ${{ listing1.price }}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="media content-section">
+            <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/' ~ listing2.image_file) }}">
+            <div class="media-body">
+                <h2>{{ listing2.title }}</h2>
+                <p>{{ listing2.content }}</p>
+                <ul>
+                    <li>Location: {{ listing2.location }}</li>
+                    <li>Price: ${{ listing2.price }}</li>
+                </ul>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

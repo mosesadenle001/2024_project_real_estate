@@ -13,12 +13,12 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
-    listings = db.relationship('Listing', backref='author', lazy=True)
+    #listings = db.relationship('Listing', backref='author', lazy=True)
     password = db.Column(db.String(60), nullable=False)
     properties = db.relationship('Property', backref='owner', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}',{self.listings}"
+        return f"User('{self.username}', '{self.email}',{self.properties}"
 
     def get_reset_token(self, expires_sec=1700):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -33,18 +33,8 @@ class User(db.Model, UserMixin):
             return None
         return User.query.get(user_id)
 
-class Listing(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text, nullable=False)
-    location_id = db.Column(db.Integer,db.ForeignKey('location.id'),nullable=False)
-    price = db.Column(db.Float, nullable=False)
-    property_type = db.Column(db.String(50), nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-
     def __repr__(self):
-        return f"Listing('{self.title}', '{self.date_posted}', '{self.location}', '{self.price}', '{self.property_type}')"
+        return f"property('{self.title}', '{self.date_posted}', '{self.location}', '{self.price}', '{self.property_type}')"
 class Property(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
@@ -56,11 +46,21 @@ class Property(db.Model):
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     def __repr__(self):
         return f"Property('{self.title}', '{self.date_posted}')"
-
 class Location(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False, unique=True)
     description = db.Column(db.Text, nullable=False)
-    listings = db.relationship('Listing', backref='location', lazy=True)
+    property = db.relationship('property', backref='location', lazy=True)
     def __repr__(self):
         return f"Location('{self.name}', '{self.description}')"
+
+
+# class Listing(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String(100), nullable=False)
+#     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+#     content = db.Column(db.Text, nullable=False)
+#     location_id = db.Column(db.Integer,db.ForeignKey('location.id'),nullable=False)
+#     price = db.Column(db.Float, nullable=False)
+#     property_type = db.Column(db.String(50), nullable=False)
+#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)

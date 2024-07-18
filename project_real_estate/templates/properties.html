@@ -1,7 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}Property Details{% endblock %}
 {% block content %}
-    <h2>{{ property.title }}</h2>
+{% for property in properties %}
+    <h2><a href="{{url_for('property',property_id=property.id)}}"> {{ property.title }}</a></h2>
+
     <div class="media content-section">
         <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/' ~ property.image_file) }}">
         <div class="media-body">
@@ -11,5 +13,7 @@
                 <li>Description: {{ property.description }}</li>
             </ul>
         </div>
+
     </div>
+{% endfor %}
 {% endblock %}

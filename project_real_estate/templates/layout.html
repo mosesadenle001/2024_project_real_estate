@@ -3,42 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Real Estate Listing Platform</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>{% block title %}Real Estate Listings{% endblock %}</title>
 </head>
 <body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="{{ url_for('home') }}">Home</a></li>
-                {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('account') }}">Account</a></li>
-                    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-                {% else %}
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
-                    <li><a href="{{ url_for('register') }}">Register</a></li>
-                {% endif %}
-                <li><a href="{{ url_for('compare') }}">Compare</a></li>
-                 <li><a href="{{ url_for('create_new_listing') }}">Create New Listing</a></li>
-                <li><a href="{{ url_for('create_new_location') }}">Create New Location</a></li>
-                <li><a href="{{ url_for('listing') }}">Listing</a></li>
-                <li><a href="{{ url_for('location') }}">Location</a></li>
-                <li><a href="{{ url_for('property') }}">Property</a></li>
-                <li><a href="{{ url_for('reset_password') }}">Reset Password</a></li>
-                <li><a href="{{ url_for('search') }}">Search</a></li>
-                <li><a href="{{ url_for('summit') }}">Summit</a></li>
-            </ul>
-        </nav>
+    <header class="header">
+        <h1>Real Estate Listings</h1>
     </header>
-    <main>
+    <nav class="navbar">
+        <div>
+            <a href="{{ url_for('home') }}">Home</a>
+            <a href="{{ url_for('compare') }}">Compare</a>
+            <a href="{{ url_for('search') }}">Search</a>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('account') }}">Account</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+            <a href="{{ url_for('submit') }}">Submit</a>
+            <a href="{{ url_for('properties') }}">Properties</a>
+            <a href="{{ url_for('add_property') }}">Add Property</a>
+        </div>
+    </nav>
+    <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                    <div class="alert {{ category }}">
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        {{ message }}
+                    </div>
                 {% endfor %}
             {% endif %}
         {% endwith %}
         {% block content %}{% endblock %}
-    </main>
+    </div>
+    <footer class="footer">
+        <p>&copy; 2024 Real Estate Listings Platform</p>
+    </footer>
 </body>
 </html>
+

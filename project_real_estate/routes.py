@@ -1,13 +1,11 @@
 from flask import (render_template, url_for, flash, redirect, request,abort)
 from project_real_estate import db, bcrypt,app
-from project_real_estate.forms import RegistrationForm, LoginForm, UpdateAccountForm, SubmitListingForm, PropertyForm, ResetPasswordForm, ListingForm, LocationForm
-from project_real_estate.models import User, Property, Listing, Location
+from project_real_estate.forms import RegistrationForm, LoginForm, UpdateAccountForm,PropertyForm, ResetPasswordForm, LocationForm
+from project_real_estate.models import User, Property,  Location
 from flask_login import login_user, current_user, logout_user, login_required
-import pandas as pd
+#import pandas as pd
 from project_real_estate.utils import send_reset_email
 #from utils import save_picture
-
-
 
 
 
@@ -17,8 +15,8 @@ from project_real_estate.utils import send_reset_email
 def home():
     page = request.args.get('page', 1, type=int)
     properties = Property.query.order_by(Property.date_posted.desc()).paginate(page=page, per_page=5)
-    listings = Listing.query.order_by(Listing.date_posted.desc()).paginate(page=page, per_page=5)
-    return render_template('home.html', properties=properties, listings=listings)
+    #listings = Listing.query.order_by(Listing.date_posted.desc()).paginate(page=page, per_page=5)
+    return render_template('home.html', properties=properties)
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
@@ -69,12 +67,6 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
     return render_template('account.html', title='Account', form=form)
-
-@app.route("/listing/<int:listing_id>")
-def listing(listing_id):
-    listing = Listing.query.get_or_404(listing_id)
-    return render_template('listing.html', title=listing.title, listing=listing)
-
 @app.route("/property/<int:property_id>")
 def property(property_id):
     property = Property.query.get_or_404(property_id)
@@ -85,21 +77,9 @@ def location(location_id):
     location = Location.query.get_or_404(location_id)
     return render_template('location.html', title=location.name, location=location)
 
-@app.route("/listing/new", methods=['GET', 'POST'])
-@login_required
-def create_new_listing():
-    form = ListingForm()
-    if form.validate_on_submit():
-        listing = Listing(title=form.title.data, location=form.location.data, content=form.content.data, author=current_user)
-        db.session.add(listing)
-        db.session.commit()
-        flash('Your listing has been created!', 'success')
-        return redirect(url_for('home'))
-    return render_template('create_new_listing.html', title='New Listing', form=form, legend='New Listing')
-
 @app.route("/location/new", methods=['GET', 'POST'])
 @login_required
-def create_new_location():
+def new_location():
     form = LocationForm()
     if form.validate_on_submit():
         location = Location(name=form.name.data, description=form.description.data)
@@ -107,12 +87,29 @@ def create_new_location():
         db.session.commit()
         flash('Your location has been added!', 'success')
         return redirect(url_for('home'))
-    return render_template('create_new_location.html', title='New Location', form=form)
+    return render_template('new_location.html', title='New Location', form=form)
 
 @app.route("/search_by_location")
 def search_by_location():
     locations = Location.query.all()
     return render_template('search_by_location.html', title='Search by Location', locations=locations)
+
+@app.route("/add_property", methods=['GET', 'POST'])
+@login_required
+def add_property():
+    form = PropertyForm()
+    if form.validate_on_submit():
+        property = Property(title=form.title.data, description=form.description.data, price=form.price.data, location=form.location.data, location_id=form.location.data, owner=current_user)
+        db.session.add(property)
+        db.session.commit()
+        flash('Your property has been created!', 'success')
+        return redirect(url_for('home'))
+    return render_template('new_property.html', title='New Property', form=form)
+
+@app.route("/properties")
+def properties():
+    properties = Property.query.all()
+    return render_template('properties.html', title="Show all properties", properties=properties)
 
 @app.route("/property/<int:property_id>/update", methods=['GET', 'POST'])
 @login_required
@@ -134,7 +131,7 @@ def update_property(property_id):
         form.description.data = property.description
         form.price.data = property.price
         form.location.data = property.location
-    return render_template('create_new_listing.html', title='Update Property', form=form)
+    return render_template('new_property.html', title='Update Property', form=form)
 
 @app.route("/property/<int:property_id>/delete", methods=['POST'])
 @login_required
@@ -171,22 +168,23 @@ def reset_password():
             flash('No account found with that email.')
     return render_template('reset_password.html', title='Reset Password', form=form)
 
-@app.route("/submit", methods=['GET', 'POST'])
-@login_required
-def submit():
-    form = SubmitListingForm()
-    if form.validate_on_submit():
-        listing = Listing(title=form.title.data,
-                          location=form.location.data,
-                          price=form.price.data,
-                          bedrooms=form.bedrooms.data,
-                          bathrooms=form.bathrooms.data,
-                          description=form.description.data)
-        db.session.add(listing)
-        db.session.commit()
-        flash('Your listing has been submitted!', 'success')
-        return redirect(url_for('home'))
-    return render_template('submit.html', title='Submit Listing', form=form)
+# @app.route("/submit", methods=['GET', 'POST'])
+# @login_required
+# def submit():
+#     form = SubmitPropertyForm()
+#     if form.validate_on_submit():
+#         property = Property(title=form.title.data,
+#                             location=form.location.data,
+#                             price=form.price.data,
+#                             bedrooms=form.bedrooms.data,
+#                             bathrooms=form.bathrooms.data,
+#                             description=form.description.data)
+#         db.session.add(property)
+#         db.session.commit()
+#         flash('Your property has been submitted!', 'success')
+#         return redirect(url_for('home'))
+#     return render_template('submit.html', title='Submit Property', form=form)
+
 
 # @app.route("/export_csv")
 # @login_required
@@ -208,17 +206,23 @@ def submit():
 #
 #     mail.send(msg)
 
-#@app.route("/property/new", methods=['GET', 'POST'])
+
+# @app.route("/listing/new", methods=['GET', 'POST'])
 # @login_required
-# def new_property():
-#     form = PropertyForm()
+# def new_listing():
+#     form = ListingForm()
 #     if form.validate_on_submit():
-#         property = Property(title=form.title.data, description=form.description.data, price=form.price.data, location=form.location.data, owner=current_user)
-#         db.session.add(property)
+#         listing = Listing(title=form.title.data, location=form.location.data, content=form.content.data, author=current_user)
+#         db.session.add(listing)
 #         db.session.commit()
-#         flash('Your property has been created!', 'success')
+#         flash('Your listing has been created!', 'success')
 #         return redirect(url_for('home'))
-#     return render_template('create_new_listing.html', title='New Property', form=form)
+#     return render_template('new_property.html', title='New Listing', form=form, legend='New Listing')
+
+# @app.route("/listing/<int:listing_id>")
+# def listing(listing_id):
+#     listing = Listing.query.get_or_404(listing_id)
+#     return render_template('listing.html', title=listing.title, listing=listing)
 
 
 # @app.route('/')
@@ -232,7 +236,7 @@ def submit():
 #     }
 #     return render_template('index.html', listings=listings)
 
-#@app.route('/listing/<int:listing_id>')
+# @app.route('/listing/<int:listing_id>')
 # def listing(listing_id):
 #     # Mock listing for demonstration purposes
 #     listing = {'id': listing_id, 'title': 'Example Listing', 'content': 'Details about the listing.', 'price': '500,000'}

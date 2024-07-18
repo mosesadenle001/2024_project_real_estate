@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h2>Create New Listing</h2>
-    <form method="POST" action="{{ url_for('new_listing') }}">
+    <h2>Create New Property</h2>
+    <form method="POST" action="{{ url_for('add_property') }}">
         {{ form.hidden_tag() }}
         <div>
             {{ form.title.label }}<br>
@@ -11,16 +11,25 @@
             {% endfor %}
         </div>
         <div>
+            {{ form.description.label }}<br>
+            {{ form.description(size=32) }}<br>
+            {% for error in form.description.errors %}
+                <span class="error">{{ error }}</span>
+            {% endfor %}
+        </div>
+
+        <div>
             {{ form.location.label }}<br>
             {{ form.location(size=32) }}<br>
+
             {% for error in form.location.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
         <div>
-            {{ form.content.label }}<br>
-            {{ form.content(rows=5) }}<br>
-            {% for error in form.content.errors %}
+            {{ form.price.label }}<br>
+            {{ form.price(size=32) }}<br>
+            {% for error in form.price.errors %}
                 <span class="error">{{ error }}</span>
             {% endfor %}
         </div>
