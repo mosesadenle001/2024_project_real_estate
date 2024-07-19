@@ -1,4 +1,4 @@
-from flask import (render_template, url_for, flash, redirect, request,abort)
+from flask import (render_template, url_for, flash, redirect, request,abort, )
 from project_real_estate import db, bcrypt,app
 from project_real_estate.forms import RegistrationForm, LoginForm, UpdateAccountForm,PropertyForm, ResetPasswordForm, LocationForm
 from project_real_estate.models import User, Property,  Location
@@ -14,8 +14,8 @@ from project_real_estate.utils import send_reset_email
 @app.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    props = Property.query.all()
-    #props = Property.query.order_by(Property.date_posted.desc()).paginate(page=page, per_page=5)
+    #props = Property.query.all()
+    props = Property.query.order_by(Property.date_posted.desc()).paginate(page=page, per_page=5)
     #listings = Listing.query.order_by(Listing.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', properties=props)
 
