@@ -14,7 +14,7 @@ login_manager = LoginManager()
 login_manager.login_view = 'routes.login'
 login_manager.login_message_category = 'info'
 mail = Mail()
-migrate = Migrate()
+migrate = Migrate(db)
 
 # Initialize Flask extensions with the project_real_estate instance
 
@@ -26,7 +26,6 @@ app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
 app.config['MAIL_USERNAME'] = os.environ.get('EMAIL_USER')
 app.config['MAIL_PASSWORD'] = os.environ.get('EMAIL_PASS')
-
 db.init_app(app)
 bcrypt.init_app(app)
 login_manager.init_app(app)

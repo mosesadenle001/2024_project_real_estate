@@ -19,7 +19,6 @@ def create_data():
     for property in properties:
         print(property)
 
-
 if __name__ == "__main__":
 
     project_real_estate = db()

@@ -9,7 +9,6 @@ class Config:
     MAIL_USERNAME = os.environ.get('EMAIL_USER')
     MAIL_PASSWORD = os.environ.get('EMAIL_PASS')
 
-
     @staticmethod
     def init_app(app):
         # This method can be used to perform additional initializations for the app

@@ -46,7 +46,6 @@ class UpdateAccountForm(FlaskForm):
             if user:
                 raise ValidationError('That email has been used. Please choose a different one.')
 
-
 class CompareForm(FlaskForm):
     properties1 = SelectField('properties1', validators=[DataRequired()])
     properties2 = SelectField('Properties2', validators=[DataRequired()])

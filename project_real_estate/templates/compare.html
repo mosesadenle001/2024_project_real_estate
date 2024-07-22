@@ -1,37 +1,40 @@
 {% extends "layout.html" %}
-{% block title %}Compare Listings{% endblock %}
+
+{% block title %}Compare Properties{% endblock %}
+
 {% block content %}
-    <h2>Compare Listings</h2>
+    <h2>Compare Properties</h2>
     <form method="POST">
         {{ form.hidden_tag() }}
         <div class="form-group">
-            {{ form.listing1.label }} {{ form.listing1(class="form-control") }}
+            {{ form.properties1.label }} {{ form.properties1(class="form-control") }}
         </div>
         <div class="form-group">
-            {{ form.listing2.label }} {{ form.listing2(class="form-control") }}
+            {{ form.properties2.label }} {{ form.properties2(class="form-control") }}
         </div>
         <button type="submit" class="btn btn-primary">Compare</button>
     </form>
-    {% if listing1 and listing2 %}
+
+    {% if property1 and property2 %}
         <div class="media content-section">
-            <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/' ~ listing1.image_file) }}">
+            <img class="rounded-circle article-image" src="{{ url_for('static', filename='images/' ~ property1.image_file) }}" alt="Image of {{ property1.title }}">
             <div class="media-body">
-                <h2>{{ listing1.title }}</h2>
-                <p>{{ listing1.content }}</p>
+                <h2>{{ property1.title }}</h2>
+                <p>{{ property1.content }}</p>
                 <ul>
-                    <li>Location: {{ listing1.location }}</li>
-                    <li>Price: ${{ listing1.price }}</li>
+                    <li>Location: {{ property1.location }}</li>
+                    <li>Price: ${{ property1.price }}</li>
                 </ul>
             </div>
         </div>
         <div class="media content-section">
-            <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/' ~ listing2.image_file) }}">
+            <img class="rounded-circle article-image" src="{{ url_for('static', filename='images/' ~ property2.image_file) }}" alt="Image of {{ property2.title }}">
             <div class="media-body">
-                <h2>{{ listing2.title }}</h2>
-                <p>{{ listing2.content }}</p>
+                <h2>{{ property2.title }}</h2>
+                <p>{{ property2.content }}</p>
                 <ul>
-                    <li>Location: {{ listing2.location }}</li>
-                    <li>Price: ${{ listing2.price }}</li>
+                    <li>Location: {{ property2.location }}</li>
+                    <li>Price: ${{ property2.price }}</li>
                 </ul>
             </div>
         </div>

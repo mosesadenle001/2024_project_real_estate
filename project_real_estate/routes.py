@@ -1,12 +1,14 @@
 from flask import (render_template, url_for, flash, redirect, request,abort, )
 from project_real_estate import db, bcrypt,app
-from project_real_estate.forms import RegistrationForm, LoginForm, UpdateAccountForm,PropertyForm, ResetPasswordForm, LocationForm
+from project_real_estate.forms import RegistrationForm, CompareForm, LoginForm, UpdateAccountForm,PropertyForm, ResetPasswordForm, LocationForm
 from project_real_estate.models import User, Property,  Location
 from flask_login import login_user, current_user, logout_user, login_required
+
+
+
 #import pandas as pd
 from project_real_estate.utils import send_reset_email
 #from utils import save_picture
-
 
 
 #Application Routes Configuration
@@ -14,8 +16,8 @@ from project_real_estate.utils import send_reset_email
 @app.route("/home")
 def home():
     page = request.args.get('page', 1, type=int)
-    #props = Property.query.all()
-    props = Property.query.order_by(Property.date_posted.desc()).paginate(page=page, per_page=5)
+    props = Property.query.all()
+    #props = Property.query.order_by(Property.date_posted.desc()).paginate(page=page, per_page=5)
     #listings = Listing.query.order_by(Listing.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', properties=props)
 
@@ -68,6 +70,7 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
     return render_template('account.html', title='Account', form=form)
+
 @app.route("/property/<int:property_id>")
 def property(property_id):
     property = Property.query.get_or_404(property_id)
@@ -153,10 +156,26 @@ def search():
         return render_template('search.html', results=properties, location=location)
     return render_template('search.html')
 
-@app.route("/compare", methods=['GET', 'POST'])
+# @app.route("/compare", methods=['GET', 'POST'])
+# def compare():
+#     properties = Property.query.all()
+#     return render_template('compare.html', properties=properties)
+@app.route('/compare', methods=['GET', 'POST'])
 def compare():
     properties = Property.query.all()
-    return render_template('compare.html', properties=properties)
+    form = CompareForm()
+    form.properties1.choices = [(p.id, p.title) for p in properties]
+    form.properties2.choices = [(p.id, p.title) for p in properties]
+
+    property1 = None
+    property2 = None
+
+    if form.validate_on_submit():
+        property1 = Property.query.get(form.properties1.data)
+        property2 = Property.query.get(form.properties2.data)
+
+    return render_template('compare.html', form=form, property1=property1, property2=property2)
+
 def reset_password():
     form = ResetPasswordForm()
     if form.validate_on_submit():

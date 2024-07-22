@@ -45,6 +45,7 @@ class Property(db.Model):
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     property = db.relationship('Location', backref='properties', lazy=True)
+    #image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     def __repr__(self):
         return f"Property('{self.title}', '{self.date_posted}')"
 class Location(db.Model):
