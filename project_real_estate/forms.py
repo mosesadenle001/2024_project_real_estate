@@ -78,6 +78,10 @@ class ResetPasswordForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
 
+class RequestResetForm(FlaskForm):
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
 class SearchForm(FlaskForm):
     search_query = StringField('Search', validators=[DataRequired()])
     submit = SubmitField('Search')

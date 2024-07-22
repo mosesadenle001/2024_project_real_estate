@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <title>{% block title %}Real Estate Listings{% endblock %}</title>
+    <title>{% block title %}Real Estate Listings Platform{% endblock %}</title>
 </head>
 <body>
     <header class="header">
-        <h1>Real Estate Listings</h1>
+        <h1>Real Estate Listings Platform</h1>
     </header>
     <nav class="navbar">
         <div>
@@ -24,6 +24,9 @@
             {% endif %}
             <a href="{{ url_for('properties') }}">Properties</a>
             <a href="{{ url_for('add_property') }}">Add Property</a>
+            <a href="{{ url_for('new_location') }}">New Location</a>
+            <a href="{{ url_for('reset_password') }}">Reset Password</a>
+
         </div>
     </nav>
     <div class="container">

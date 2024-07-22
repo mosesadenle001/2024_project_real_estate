@@ -1,10 +1,8 @@
 from flask import (render_template, url_for, flash, redirect, request,abort, )
 from project_real_estate import db, bcrypt,app
-from project_real_estate.forms import RegistrationForm, CompareForm, LoginForm, UpdateAccountForm,PropertyForm, ResetPasswordForm, LocationForm
+from project_real_estate.forms import RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, ResetPasswordForm, LocationForm
 from project_real_estate.models import User, Property,  Location
 from flask_login import login_user, current_user, logout_user, login_required
-
-
 
 #import pandas as pd
 from project_real_estate.utils import send_reset_email
@@ -18,7 +16,6 @@ def home():
     page = request.args.get('page', 1, type=int)
     props = Property.query.all()
     #props = Property.query.order_by(Property.date_posted.desc()).paginate(page=page, per_page=5)
-    #listings = Listing.query.order_by(Listing.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', properties=props)
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -78,8 +75,8 @@ def property(property_id):
 
 @app.route("/location/<int:location_id>")
 def location(location_id):
-    location = Location.query.get_or_404(location_id)
-    return render_template('location.html', title=location.name, location=location)
+    loc = Location.query.get_or_404(location_id)
+    return render_template('location.html', title=location.name, location=loc)
 
 @app.route("/location/new", methods=['GET', 'POST'])
 @login_required
@@ -92,11 +89,6 @@ def new_location():
         flash('Your location has been added!', 'success')
         return redirect(url_for('home'))
     return render_template('new_location.html', title='New Location', form=form)
-
-@app.route("/search_by_location")
-def search_by_location():
-    locations = Location.query.all()
-    return render_template('search_by_location.html', title='Search by Location', locations=locations)
 
 @app.route("/add_property", methods=['GET', 'POST'])
 @login_required
@@ -156,10 +148,6 @@ def search():
         return render_template('search.html', results=properties, location=location)
     return render_template('search.html')
 
-# @app.route("/compare", methods=['GET', 'POST'])
-# def compare():
-#     properties = Property.query.all()
-#     return render_template('compare.html', properties=properties)
 @app.route('/compare', methods=['GET', 'POST'])
 def compare():
     properties = Property.query.all()
@@ -176,8 +164,23 @@ def compare():
 
     return render_template('compare.html', form=form, property1=property1, property2=property2)
 
+# def reset_password():
+#     form = ResetPasswordForm()
+#     if form.validate_on_submit():
+#         user = User.query.filter_by(email=form.email.data).first()
+#         if user:
+#             send_reset_email(user)
+#             flash('An email has been sent with instructions to reset your password.', 'info')
+#             return redirect(url_for('login'))
+#         else:
+#             flash('No account found with that email.')
+#     return render_template('reset_password.html', title='Reset Password', form=form)
+
+@app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
-    form = ResetPasswordForm()
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
@@ -185,25 +188,26 @@ def reset_password():
             flash('An email has been sent with instructions to reset your password.', 'info')
             return redirect(url_for('login'))
         else:
-            flash('No account found with that email.')
+            flash('No account found with that email.', 'warning')
     return render_template('reset_password.html', title='Reset Password', form=form)
 
-# @app.route("/submit", methods=['GET', 'POST'])
-# @login_required
-# def submit():
-#     form = PropertyForm()
-#     if form.validate_on_submit():
-#         property = Property(title=form.title.data,
-#                             location=form.location.data,
-#                             price=form.price.data,
-#                             bedrooms=form.bedrooms.data,
-#                             bathrooms=form.bathrooms.data,
-#                             description=form.description.data)
-#         db.session.add(property)
-#         db.session.commit()
-#         flash('Your property has been submitted!', 'success')
-#         return redirect(url_for('home'))
-#     return render_template('submit.html', title='Submit Property', form=form)
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect(url_for('home'))
+    user = User.verify_reset_token(token)
+    if not user:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('reset_password'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('login'))
+    return render_template('reset_token.html', title='Reset Password', form=form)
+
 
 
 # @app.route("/export_csv")
@@ -225,6 +229,39 @@ def reset_password():
 #     return redirect(url_for('home'))
 #
 #     mail.send(msg)
+
+# @app.route("/search_by_location")
+# def search_by_location():
+#     locations = Location.query.all()
+#     return render_template('search_by_location.html', title='Search by Location', locations=locations)
+
+#@app.route('/locations')
+# def locations():
+#     locs = Location.query.all()
+#     return render_template('location.html', title='All Locations', locations=locs)
+
+
+# @app.route("/submit", methods=['GET', 'POST'])
+# @login_required
+# def submit():
+#     form = PropertyForm()
+#     if form.validate_on_submit():
+#         property = Property(title=form.title.data,
+#                             location=form.location.data,
+#                             price=form.price.data,
+#                             bedrooms=form.bedrooms.data,
+#                             bathrooms=form.bathrooms.data,
+#                             description=form.description.data)
+#         db.session.add(property)
+#         db.session.commit()
+#         flash('Your property has been submitted!', 'success')
+#         return redirect(url_for('home'))
+#     return render_template('submit.html', title='Submit Property', form=form)
+
+# @app.route("/compare", methods=['GET', 'POST'])
+# def compare():
+#     properties = Property.query.all()
+#     return render_template('compare.html', properties=properties)
 
 
 # @app.route("/listing/new", methods=['GET', 'POST'])

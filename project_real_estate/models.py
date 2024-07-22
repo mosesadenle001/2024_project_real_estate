@@ -22,7 +22,8 @@ class User(db.Model, UserMixin):
 
     def get_reset_token(self, expires_sec=1700):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
-        return s.dumps({'user_id': self.id}).decode('utf-8')
+        token = s.dumps({'user_id': str(self.id)}).decode('utf-8')
+        return token  # string
 
     @staticmethod
     def verify_reset_token(token):
@@ -55,14 +56,3 @@ class Location(db.Model):
     property = db.relationship('Property', backref='locations', lazy=True)
     def __repr__(self):
         return f"Location('{self.name}', '{self.description}')"
-
-
-# class Listing(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     title = db.Column(db.String(100), nullable=False)
-#     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-#     content = db.Column(db.Text, nullable=False)
-#     location_id = db.Column(db.Integer,db.ForeignKey('location.id'),nullable=False)
-#     price = db.Column(db.Float, nullable=False)
-#     property_type = db.Column(db.String(50), nullable=False)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
