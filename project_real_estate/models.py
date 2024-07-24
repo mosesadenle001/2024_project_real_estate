@@ -20,11 +20,12 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}',{self.properties}"
 
-    def get_reset_token(self, expires_sec=1700):
+    def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
-        token = s.dumps({'user_id': str(self.id)}).decode('utf-8')
-        return token  # string
+        token = s.dumps({'user_id': self.id})
+        operand_type = token.decode('utf-8') if isinstance(token, bytes) else token
 
+        return operand_type
     @staticmethod
     def verify_reset_token(token):
         s = Serializer(current_app.config['SECRET_KEY'])
@@ -34,8 +35,6 @@ class User(db.Model, UserMixin):
             return None
         return User.query.get(user_id)
 
-    def __repr__(self):
-        return f"property('{self.title}', '{self.date_posted}', '{self.location}', '{self.price}', '{self.property_type}')"
 class Property(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)

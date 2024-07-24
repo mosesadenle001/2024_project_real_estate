@@ -203,18 +203,6 @@ def compare():
 
     return render_template('compare.html', form=form, property1=property1, property2=property2)
 
-# def reset_password():
-#     form = ResetPasswordForm()
-#     if form.validate_on_submit():
-#         user = User.query.filter_by(email=form.email.data).first()
-#         if user:
-#             send_reset_email(user)
-#             flash('An email has been sent with instructions to reset your password.', 'info')
-#             return redirect(url_for('login'))
-#         else:
-#             flash('No account found with that email.')
-#     return render_template('reset_password.html', title='Reset Password', form=form)
-
 @app.route('/reset_password', methods=['GET', 'POST'])
 def reset_password():
     if current_user.is_authenticated:
@@ -223,7 +211,7 @@ def reset_password():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
-            send_reset_email(user)
+            #send_reset_email(user)
             flash('An email has been sent with instructions to reset your password.', 'info')
             return redirect(url_for('login'))
         else:
