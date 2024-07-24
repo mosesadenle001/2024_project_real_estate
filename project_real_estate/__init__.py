@@ -47,7 +47,7 @@ from flask_migrate import Migrate
 # Initialize Flask app
 app = Flask(__name__)
 
-# Configuration
+# # Configuration
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///real_estate_listings.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
