@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <title>{% block title %}Real Estate Listings Platform{% endblock %}</title>
 </head>
 <body>
@@ -32,6 +32,7 @@
                 {% for category, message in messages %}
                     <div class="alert {{ category }}">
                         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <img src="{{ url_for('static', filename='images/listingimg.png') }}" width="1100">
                         {{ message }}
                     </div>
                 {% endfor %}

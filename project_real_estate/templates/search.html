@@ -1,35 +1,26 @@
 {% extends "layout.html" %}
 
-{% block title %}Search{% endblock %}
+{% block title %}Search Properties{% endblock %}
 
 {% block content %}
     <h2>Search Properties</h2>
     <form method="POST" action="{{ url_for('search') }}">
+        {{ form.hidden_tag() }}
+        {{ form.csrf_token }}
         <div class="form-group">
-            <label for="location">Location</label>
-            <input type="text" id="location" name="location" class="form-control" placeholder="Enter a location...">
-        </div>
-        <div class="form-group">
-            <input type="text" name="query" class="form-control" placeholder="Search for properties...">
+            <label for="location">{{ form.search_query.label }}</label>
+            {{ form.search_query(size=32, class="form-control", id="location", placeholder="Enter a location...") }}
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     {% if results %}
-        <h3>Search Results</h3>
-        {% for result in results %}
-            <div class="media content-section">
-                <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/' ~ result.image_file) }}" alt="Property Image">
-                <div class="media-body">
-                    <h2>{{ result.title }}</h2>
-                    <p>{{ result.description }}</p>
-                    <ul>
-                        <li>Location: {{ result.location }}</li>
-                        <li>Price: ${{ result.price }}</li>
-                    </ul>
-                </div>
-            </div>
-        {% endfor %}
+        <h2>Search Results for "{{ search_location }}"</h2>
+        <ul>
+            {% for property in results %}
+                <li>{{ property.title }} - {{ property.location }} - ${{ property.price }}</li>
+            {% endfor %}
+        </ul>
     {% else %}
         <p>No properties found matching your search criteria.</p>
     {% endif %}

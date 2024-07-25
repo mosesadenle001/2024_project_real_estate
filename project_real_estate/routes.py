@@ -1,11 +1,12 @@
 from flask import (render_template, url_for, flash, redirect, request,abort, )
 from project_real_estate import db, bcrypt,app
-from project_real_estate.forms import PromoteUserForm, RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, ResetPasswordForm, LocationForm
+from project_real_estate.forms import PromoteUserForm, SearchForm, DeleteForm, RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, ResetPasswordForm, LocationForm
 from project_real_estate.models import User, Property,  Location
 from flask_login import login_user, current_user, logout_user, login_required
-from functools import wraps
+
+
 #import pandas as pd
-from project_real_estate.utils import send_reset_email
+#from project_real_estate.utils import send_reset_email,save_picture
 #from utils import save_picture
 
 
@@ -13,7 +14,7 @@ from project_real_estate.utils import send_reset_email
 
 @app.route("/admin", methods=['GET', 'POST'])
 @login_required
-def admin_panel():
+def admin():
     if not current_user.is_admin:
         abort(403)
     form = PromoteUserForm()
@@ -25,7 +26,7 @@ def admin_panel():
             flash(f'{user.username} has been promoted to Admin!', 'success')
         else:
             flash('User not found.', 'danger')
-    return render_template('admin_panel.html', title='Admin Panel', form=form)
+    return render_template('admin.html', title='Admin', form=form)
 
 @app.route("/admin/users", methods=['GET'])
 @login_required
@@ -35,17 +36,9 @@ def list_users():
     users = User.query.all()
     return render_template('list_users.html', title='List of Users', users=users)
 
-def admin_required(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not current_user.is_admin:
-            abort(403)
-        return f(*args, **kwargs)
-    return decorated_function
-
 @app.route("/admin/protected-route")
 @login_required
-@admin_required
+#@admin_required
 def protected_route():
     return "This is a protected admin route."
 
@@ -144,7 +137,8 @@ def add_property():
 @app.route("/properties")
 def properties():
     properties = Property.query.all()
-    return render_template('properties.html', title="Show all properties", properties=properties)
+    form = DeleteForm()
+    return render_template('properties.html', title="Show all properties", properties=properties, form=form)
 
 @app.route("/property/<int:property_id>/update", methods=['GET', 'POST'])
 @login_required
@@ -177,16 +171,18 @@ def delete_property(property_id):
     db.session.delete(property)
     db.session.commit()
     flash('Your property has been deleted successful')
-    return redirect(url_for('home'))
+    return redirect(url_for('properties'))
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
-    if request.method == 'POST':
-        location = request.form.get('location')
-        properties = Property.query.filter(Property.location.ilike(f'%{location}%')).all()
-        return render_template('search.html', results=properties, location=location)
-    return render_template('search.html')
-
+    form = SearchForm()
+    results = []
+    search_location = ""
+    if form.validate_on_submit():
+        search_location = form.search_query.data
+        # Query properties by location
+        results = Property.query.filter(Property.location.ilike(f'%{search_location}%')).all()
+    return render_template('search.html', form=form, results=results, search_location=search_location)
 @app.route('/compare', methods=['GET', 'POST'])
 def compare():
     properties = Property.query.all()
@@ -256,4 +252,3 @@ def reset_token(token):
 #     return redirect(url_for('home'))
 #
 #     mail.send(msg)
-

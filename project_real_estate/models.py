@@ -4,7 +4,9 @@ from flask_login import UserMixin
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from flask import current_app
 
+
 #Initialize all database models
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -56,4 +58,3 @@ class Location(db.Model):
     property = db.relationship('Property', backref='locations', lazy=True)
     def __repr__(self):
         return f"Location('{self.name}', '{self.description}')"
-

@@ -2,7 +2,7 @@
 {% extends "layout.html" %}
 {% block content %}
     <h1>Admin Panel</h1>
-    <form method="POST" action="{{ url_for('admin_panel') }}">
+    <form method="POST" action="{{ url_for('admin') }}">
         {{ form.hidden_tag() }}
         <div class="form-group">
             {{ form.email.label(class="form-label") }}

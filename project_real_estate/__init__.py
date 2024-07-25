@@ -5,9 +5,11 @@ from flask_login import LoginManager
 from flask_mail import Mail
 import os
 from flask_migrate import Migrate
+from flask_wtf.csrf import CSRFProtect
 
-# Initialize Flask app
+# Initialize Flask app and CSRF protection
 app = Flask(__name__)
+csrf = CSRFProtect(app)
 
 # # Configuration
 app.config['SECRET_KEY'] = 'your_secret_key'
@@ -31,4 +33,6 @@ migrate = Migrate(app, db)
 # Import routes after initializing extensions to avoid circular imports
 from project_real_estate import routes
 
-
+# Import routes and error handlers
+with app.app_context():
+    from project_real_estate import routes, errors

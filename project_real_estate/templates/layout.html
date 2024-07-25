@@ -27,7 +27,9 @@
             <a href="{{ url_for('add_property') }}">Add Property</a>
             <a href="{{ url_for('new_location') }}">New Location</a>
             <a href="{{ url_for('reset_password') }}">Reset Password</a>
-            <a href="{{ url_for('admin_panel') }}">Admin Panel</a>
+            <a href="{{ url_for('admin') }}">Admin</a>
+            <a href="{{ url_for('list_users') }}">List Users</a>
+
         </div>
     </nav>
 
@@ -37,7 +39,7 @@
                 {% for category, message in messages %}
                     <div class="alert {{ category }}">
                         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                        <img src="{{ url_for('static', filename='images/for_listing_img.png') }}" width="1100">
+
                         {{ message }}
                     </div>
                 {% endfor %}
