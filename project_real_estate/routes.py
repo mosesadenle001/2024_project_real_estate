@@ -1,6 +1,6 @@
 from flask import (render_template, url_for, flash, redirect, request,abort, )
 from project_real_estate import db, bcrypt,app
-from project_real_estate.forms import PromoteUserForm, SearchForm, DeleteForm, RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, ResetPasswordForm, LocationForm
+from project_real_estate.forms import PromoteUserForm, SearchForm, DeleteForm, RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, LocationForm
 from project_real_estate.models import User, Property,  Location
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -12,21 +12,29 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 #Application Routes Configuration
 
-@app.route("/admin", methods=['GET', 'POST'])
+@app.route("/admin")
 @login_required
 def admin():
     if not current_user.is_admin:
-        abort(403)
-    form = PromoteUserForm()
-    if form.validate_on_submit():
-        user = User.query.filter_by(email=form.email.data).first()
-        if user:
-            user.is_admin = True
-            db.session.commit()
-            flash(f'{user.username} has been promoted to Admin!', 'success')
-        else:
-            flash('User not found.', 'danger')
-    return render_template('admin.html', title='Admin', form=form)
+        return redirect(url_for('home'))
+    return render_template('admin.html', title='Admin')
+
+
+# @app.route("/admin", methods=['GET', 'POST'])
+# @login_required
+# def admin():
+#     if not current_user.is_admin:
+#         abort(403)
+#     form = PromoteUserForm()
+#     if form.validate_on_submit():
+#         user = User.query.filter_by(email=form.email.data).first()
+#         if user:
+#             user.is_admin = True
+#             db.session.commit()
+#             flash(f'{user.username} has been promoted to Admin!', 'success')
+#         else:
+#             flash('User not found.', 'danger')
+#     return render_template('admin.html', title='Admin', form=form)
 
 @app.route("/admin/users", methods=['GET'])
 @login_required
@@ -102,8 +110,8 @@ def account():
 
 @app.route("/property/<int:property_id>")
 def property(property_id):
-    property = Property.query.get_or_404(property_id)
-    return render_template('property.html', title=property.title, property=property)
+    property_our = Property.query.get_or_404(property_id)
+    return render_template('property.html', title=property.title, property=property_our)
 
 @app.route("/location/<int:location_id>")
 def location(location_id):
@@ -134,6 +142,22 @@ def add_property():
         return redirect(url_for('home'))
     return render_template('new_property.html', title='New Property', form=form)
 
+#route to display the property details after updating.
+@app.route("/property/<int:property_id>")
+def property_detail(property_id):
+    property = Property.query.get_or_404(property_id)
+    return render_template('property.html', title=property.title, property=property)
+@app.route("/property/<int:property_id>/delete", methods=['POST'])
+@login_required
+def delete_property(property_id):
+    property = Property.query.get_or_404(property_id)
+    if property.owner != current_user:
+        abort(403)
+    db.session.delete(property)
+    db.session.commit()
+    flash('Your property has been deleted successful')
+    return redirect(url_for('properties'))
+
 @app.route("/properties")
 def properties():
     properties = Property.query.all()
@@ -145,7 +169,7 @@ def properties():
 def update_property(property_id):
     property = Property.query.get_or_404(property_id)
     if property.owner != current_user:
-        abort(403)   #handle HTTP exceptions.
+        abort(403)
     form = PropertyForm()
     if form.validate_on_submit():
         property.title = form.title.data
@@ -154,24 +178,13 @@ def update_property(property_id):
         property.location = form.location.data
         db.session.commit()
         flash('Your property has been updated!', 'success')
-        return redirect(url_for('property', property_id=property.id))
+        return redirect(url_for('property_detail', property_id=property.id))
     elif request.method == 'GET':
         form.title.data = property.title
         form.description.data = property.description
         form.price.data = property.price
         form.location.data = property.location
     return render_template('new_property.html', title='Update Property', form=form)
-
-@app.route("/property/<int:property_id>/delete", methods=['POST'])
-@login_required
-def delete_property(property_id):
-    property = Property.query.get_or_404(property_id)
-    if property.owner != current_user:
-        abort(403)
-    db.session.delete(property)
-    db.session.commit()
-    flash('Your property has been deleted successful')
-    return redirect(url_for('properties'))
 
 @app.route("/search", methods=['GET', 'POST'])
 def search():
@@ -189,14 +202,11 @@ def compare():
     form = CompareForm()
     form.properties1.choices = [(p.id, p.title) for p in properties]
     form.properties2.choices = [(p.id, p.title) for p in properties]
-
     property1 = None
     property2 = None
-
     if form.validate_on_submit():
         property1 = Property.query.get(form.properties1.data)
         property2 = Property.query.get(form.properties2.data)
-
     return render_template('compare.html', form=form, property1=property1, property2=property2)
 
 @app.route('/reset_password', methods=['GET', 'POST'])
@@ -213,23 +223,6 @@ def reset_password():
         else:
             flash('No account found with that email.', 'warning')
     return render_template('reset_password.html', title='Reset Password', form=form)
-
-@app.route('/reset_password/<token>', methods=['GET', 'POST'])
-def reset_token(token):
-    if current_user.is_authenticated:
-        return redirect(url_for('home'))
-    user = User.verify_reset_token(token)
-    if not user:
-        flash('That is an invalid or expired token', 'warning')
-        return redirect(url_for('reset_password'))
-    form = ResetPasswordForm()
-    if form.validate_on_submit():
-        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
-        user.password = hashed_password
-        db.session.commit()
-        flash('Your password has been updated! You are now able to log in', 'success')
-        return redirect(url_for('login'))
-    return render_template('reset_token.html', title='Reset Password', form=form)
 
 
 

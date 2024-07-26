@@ -10,7 +10,6 @@
     <header class="header">
         <h1>Real Estate Listings Platform</h1>
     </header>
-
     <nav class="navbar">
         <div>
             <a href="{{ url_for('home') }}">Home</a>
@@ -28,18 +27,16 @@
             <a href="{{ url_for('new_location') }}">New Location</a>
             <a href="{{ url_for('reset_password') }}">Reset Password</a>
             <a href="{{ url_for('admin') }}">Admin</a>
-            <a href="{{ url_for('list_users') }}">List Users</a>
 
         </div>
     </nav>
-
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
                     <div class="alert {{ category }}">
                         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-
+                        <img src="{{ url_for('static', filename='images/for_listing_img.png') }}" width=1100>
                         {{ message }}
                     </div>
                 {% endfor %}
@@ -47,9 +44,11 @@
         {% endwith %}
         {% block content %}{% endblock %}
     </div>
-
     <footer class="footer">
         <p>&copy; 2024 Real Estate Listings Platform</p>
     </footer>
 </body>
 </html>
+
+
+

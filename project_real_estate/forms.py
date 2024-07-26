@@ -5,7 +5,6 @@ from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationE
 from flask_login import current_user
 from project_real_estate.models import User
 
-
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=25)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -74,13 +73,19 @@ class CompareForm(FlaskForm):
     properties2 = SelectField('Properties 2', validators=[DataRequired()])
     submit = SubmitField('Compare')
 
-class PropertyForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()])
-    description = TextAreaField('Description', validators=[DataRequired()])
-    price = FloatField('Price', validators=[DataRequired()])
-    location = StringField('Location', validators=[DataRequired()])
-    submit = SubmitField('Post Property')
+# class PropertyForm(FlaskForm):
+#     title = StringField('Title', validators=[DataRequired()])
+#     description = TextAreaField('Description', validators=[DataRequired()])
+#     price = FloatField('Price', validators=[DataRequired()])
+#     location = StringField('Location', validators=[DataRequired()])
+#     submit = SubmitField('Post Property')
 
+class PropertyForm(FlaskForm):
+    title = StringField('Title', validators=[DataRequired(), Length(min=2, max=100)])
+    description = TextAreaField('Description', validators=[DataRequired()])
+    price = DecimalField('Price', validators=[DataRequired()])
+    location = StringField('Location', validators=[DataRequired(), Length(min=2, max=100)])
+    submit = SubmitField('Update Property')
 class SubmitPropertiesForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
