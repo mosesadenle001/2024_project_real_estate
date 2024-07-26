@@ -12,29 +12,29 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 #Application Routes Configuration
 
-@app.route("/admin")
-@login_required
-def admin():
-    if not current_user.is_admin:
-        return redirect(url_for('home'))
-    return render_template('admin.html', title='Admin')
-
-
-# @app.route("/admin", methods=['GET', 'POST'])
+# @app.route("/admin")
 # @login_required
 # def admin():
 #     if not current_user.is_admin:
-#         abort(403)
-#     form = PromoteUserForm()
-#     if form.validate_on_submit():
-#         user = User.query.filter_by(email=form.email.data).first()
-#         if user:
-#             user.is_admin = True
-#             db.session.commit()
-#             flash(f'{user.username} has been promoted to Admin!', 'success')
-#         else:
-#             flash('User not found.', 'danger')
-#     return render_template('admin.html', title='Admin', form=form)
+#         return redirect(url_for('home'))
+#     return render_template('admin.html', title='Admin')
+
+
+@app.route("/admin", methods=['GET', 'POST'])
+@login_required
+def admin():
+    if not current_user.is_admin:
+        abort(403)
+    form = PromoteUserForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            user.is_admin = True
+            db.session.commit()
+            flash(f'{user.username} has been promoted to Admin!', 'success')
+        else:
+            flash('User not found.', 'danger')
+    return render_template('admin.html', title='Admin', form=form)
 
 @app.route("/admin/users", methods=['GET'])
 @login_required
