@@ -11,6 +11,7 @@ from flask_login import login_user, current_user, logout_user, login_required
 
 
 #Application Routes Configuration
+
 @app.route("/admin", methods=['GET', 'POST'])
 @login_required
 def admin_dashboard():
@@ -109,27 +110,29 @@ def update_user(user_id):
         form.is_admin.data = user.is_admin
     return render_template('admin_update_user.html', title='Admin Update User', form=form, user=user)
 
-@app.route("/admin/property/<int:property_id>/update", methods=['GET', 'POST'])
+@app.route("/property/update/<int:property_id>", methods=['GET', 'POST'])
 @login_required
 def update_property(property_id):
     property = Property.query.get_or_404(property_id)
-    if not current_user.is_admin:
+    if property.owner != current_user and not current_user.is_admin:
         abort(403)
-    form = UpdatePropertyForm()
+    form = PropertyForm()
     if form.validate_on_submit():
         property.title = form.title.data
         property.description = form.description.data
         property.price = form.price.data
         property.location = form.location.data
         db.session.commit()
-        flash('The property has been updated!', 'success')
-        return redirect(url_for('admin_dashboard'))
+        flash('Your property has been updated!', 'success')
+        return redirect(url_for('admin_dashboard', property_id=property.id))
     elif request.method == 'GET':
         form.title.data = property.title
         form.description.data = property.description
         form.price.data = property.price
         form.location.data = property.location
-    return render_template('admin_update_property.html', title='Admin Update Property', form=form, property=property)
+    return render_template('admin_update_property.html', title='Admin Update Property', form=form, legend='Update Property')
+
+
 
 @app.route("/account", methods=['GET', 'POST'])
 @login_required

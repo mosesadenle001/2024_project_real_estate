@@ -26,11 +26,12 @@
             <a href="{{ url_for('add_property') }}">Add Property</a>
             <a href="{{ url_for('new_location') }}">New Location</a>
             <a href="{{ url_for('reset_password') }}">Reset Password</a>
+            <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
             {% if current_user.is_authenticated and current_user.is_admin %}
-                <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
-                <a href="{{ url_for('update_user', user_id=current_user.id) }}">Admin Update User</a>
-                <a href="{{ url_for('update_property', property_id=1) }}">Update Property</a>
+            <a href="{{ url_for('update_user', user_id=current_user.id) }}">Admin Update User</a>
+            <a href="{{ url_for('update_property', property_id=2) }}">Update Property</a>
             {% endif %}
+
         </div>
     </nav>
     <div class="container">

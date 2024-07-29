@@ -48,4 +48,3 @@ with app.app_context():
         admin = User(username='admin', email='admin@mail.com', password=hashed_password, is_admin=True)
         db.session.add(admin)
         db.session.commit()
-
