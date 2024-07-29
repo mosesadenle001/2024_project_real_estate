@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script defer src="scripts.js"></script>
     <title>{% block title %}Real Estate Listings Platform{% endblock %}</title>
+
 </head>
 <body>
     <header class="header">
@@ -29,7 +31,7 @@
             <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
             {% if current_user.is_authenticated and current_user.is_admin %}
             <a href="{{ url_for('update_user', user_id=current_user.id) }}">Admin Update User</a>
-            <a href="{{ url_for('update_property', property_id=2) }}">Update Property</a>
+            <a href="{{ url_for('update_property', property_id=1) }}">Update Property</a>
             {% endif %}
 
         </div>

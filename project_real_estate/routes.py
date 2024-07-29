@@ -1,4 +1,4 @@
-from flask import (render_template, url_for, flash, redirect, request,abort, )
+from flask import (render_template, url_for, flash, redirect, request,abort, jsonify)
 from project_real_estate import db, bcrypt,app
 from project_real_estate.forms import PromoteUserForm, UpdateUserForm,UpdatePropertyForm, SearchForm, DeleteForm, RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, LocationForm
 from project_real_estate.models import User, Property,  Location

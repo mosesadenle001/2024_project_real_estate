@@ -33,6 +33,7 @@
                 {% for category, message in messages %}
                     <div class="alert {{ category }}">
                         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
                         <img src="{{ url_for('static', filename='images/listingimg.png') }}" width="1400">
                         {{ message }}
                     </div>

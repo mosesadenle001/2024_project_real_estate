@@ -1,10 +1,13 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f8f9fa;
+    background-image: url("{{ url_for('static', filename='images/listingimg.png') }}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100%;
+    width: 100%;
     margin: 0;
     padding: 0;
 }
-
 .container {
     width: 80%;
     margin: auto;
@@ -140,14 +143,14 @@ body {
 
 /* Image Styles */
 .image-carousel {
-    width: 100%;
+    width: 200%;
     height: 400px;
     overflow: hidden;
     position: relative;
 }
 
 .image-carousel img {
-    width: 100%;
+    width: 200%;
     height: auto;
     position: absolute;
     left: 0;

@@ -1,25 +1,21 @@
-##FROM ubuntu:latest
-##LABEL authors="Eridas"
-##
-##ENTRYPOINT ["top", "-b"]
-#
-## Use the official Python image from the DockerHub
-#FROM python:3.8-slim
-#
-## Set the working directory
-#WORKDIR /project_real_estate
-#
-## Copy the requirements.txt file to the container
-#COPY requirements.txt .
-#
-## Install the dependencies
-#RUN pip install --no-cache-dir -r requirements.txt
-#
-## Copy the rest of the application code to the container
-#COPY . .
-#
-## Expose the port the project_real_estate runs on
-#EXPOSE 5000
-#
-## Command to run the application
-#CMD ["python", "run.py"]
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the current directory contents into the container at /app
+COPY . /app
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Make port 5000 available to the world outside this container
+EXPOSE 5000
+
+# Define environment variable
+ENV FLASK_APP=run.py
+ENV FLASK_ENV=production
+
+# Run app.py when the container launches
+CMD ["flask", "run", "--host=0.0.0.0"]
