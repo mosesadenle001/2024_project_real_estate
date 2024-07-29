@@ -1,9 +1,16 @@
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, IntegerField, DecimalField, PasswordField, SubmitField, BooleanField, TextAreaField, FloatField, SelectField
+from wtforms import StringField, IntegerField, DecimalField, PasswordField, FileField, SubmitField, BooleanField, TextAreaField, FloatField, SelectField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, ValidationError
 from flask_login import current_user
 from project_real_estate.models import User
+from flask_wtf.file import FileAllowed
+
+class UpdateUserForm(FlaskForm):
+    username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Email()])
+    is_admin = BooleanField('Admin')
+    submit = SubmitField('Update User')
 
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=25)])
@@ -73,27 +80,21 @@ class CompareForm(FlaskForm):
     properties2 = SelectField('Properties 2', validators=[DataRequired()])
     submit = SubmitField('Compare')
 
-# class PropertyForm(FlaskForm):
-#     title = StringField('Title', validators=[DataRequired()])
-#     description = TextAreaField('Description', validators=[DataRequired()])
-#     price = FloatField('Price', validators=[DataRequired()])
-#     location = StringField('Location', validators=[DataRequired()])
-#     submit = SubmitField('Post Property')
-
 class PropertyForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=2, max=100)])
     description = TextAreaField('Description', validators=[DataRequired()])
     price = DecimalField('Price', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired(), Length(min=2, max=100)])
     submit = SubmitField('Update Property')
-class SubmitPropertiesForm(FlaskForm):
+
+class UpdatePropertyForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
+    price = FloatField('Price', validators=[DataRequired()])
     location = StringField('Location', validators=[DataRequired()])
-    price = DecimalField('Price', validators=[DataRequired()])
-    bedrooms = IntegerField('Bedrooms', validators=[DataRequired()])
-    bathrooms = IntegerField('Bathrooms', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
-    submit = SubmitField('Submit Properties')
+    image_file = FileField('Update Property Image', validators=[FileAllowed(['jpg', 'png'])])
+    submit = SubmitField('Update Property')
+
 class SearchForm(FlaskForm):
     search_query = StringField('Search', validators=[DataRequired()])
     submit = SubmitField('Search')
@@ -101,4 +102,11 @@ class SearchForm(FlaskForm):
 class DeleteForm(FlaskForm):
     pass
 
-
+# class SubmitPropertiesForm(FlaskForm):
+#     title = StringField('Title', validators=[DataRequired()])
+#     location = StringField('Location', validators=[DataRequired()])
+#     price = DecimalField('Price', validators=[DataRequired()])
+#     bedrooms = IntegerField('Bedrooms', validators=[DataRequired()])
+#     bathrooms = IntegerField('Bathrooms', validators=[DataRequired()])
+#     description = TextAreaField('Description', validators=[DataRequired()])
+#     submit = SubmitField('Submit Properties')

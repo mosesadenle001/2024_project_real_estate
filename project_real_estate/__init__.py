@@ -11,7 +11,6 @@ from flask_wtf.csrf import CSRFProtect
 app = Flask(__name__)
 csrf = CSRFProtect(app)
 
-# # Configuration
 app.config['SECRET_KEY'] = 'your_secret_key'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///real_estate_listings.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -35,9 +34,11 @@ from project_real_estate import routes
 
 # Import routes and error handlers
 with app.app_context():
-    from project_real_estate import routes, errors
+    from project_real_estate import routes, errors, models
 
-
+@login_manager.user_loader
+def load_user(user_id):
+    return models.User.query.get(int(user_id))
 
 # Create admin user
 with app.app_context():

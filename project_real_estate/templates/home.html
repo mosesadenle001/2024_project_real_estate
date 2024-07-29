@@ -17,7 +17,7 @@
             <a href="{{ url_for('search') }}">Search</a>
             {% if current_user.is_authenticated %}
                 <a href="{{ url_for('account') }}">Account</a>
-                <a href="{{ url_for('admin') }}">Go to Admin Page</a>
+                <a href="{{ url_for('admin_dashboard') }}">Go to Admin Dashboard Page</a>
                 <a href="{{ url_for('logout') }}">Logout</a>
             {% else %}
                 <a href="{{ url_for('login') }}">Login</a>
@@ -33,7 +33,7 @@
                 {% for category, message in messages %}
                     <div class="alert {{ category }}">
                         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                        <img src="{{ url_for('static', filename='images/listingimg.png') }}" width="1100">
+                        <img src="{{ url_for('static', filename='images/listingimg.png') }}" width="1400">
                         {{ message }}
                     </div>
                 {% endfor %}

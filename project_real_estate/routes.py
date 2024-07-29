@@ -1,28 +1,19 @@
 from flask import (render_template, url_for, flash, redirect, request,abort, )
 from project_real_estate import db, bcrypt,app
-from project_real_estate.forms import PromoteUserForm, SearchForm, DeleteForm, RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, LocationForm
+from project_real_estate.forms import PromoteUserForm, UpdateUserForm,UpdatePropertyForm, SearchForm, DeleteForm, RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, LocationForm
 from project_real_estate.models import User, Property,  Location
 from flask_login import login_user, current_user, logout_user, login_required
-
-
+# from werkzeug.utils import secure_filename
+# import os
 #import pandas as pd
-#from project_real_estate.utils import send_reset_email,save_picture
-#from utils import save_picture
+# from project_real_estate.utils import send_reset_email,save_picture
+# from utils import save_picture
 
 
 #Application Routes Configuration
-
-# @app.route("/admin")
-# @login_required
-# def admin():
-#     if not current_user.is_admin:
-#         return redirect(url_for('home'))
-#     return render_template('admin.html', title='Admin')
-
-
 @app.route("/admin", methods=['GET', 'POST'])
 @login_required
-def admin():
+def admin_dashboard():
     if not current_user.is_admin:
         abort(403)
     form = PromoteUserForm()
@@ -32,9 +23,12 @@ def admin():
             user.is_admin = True
             db.session.commit()
             flash(f'{user.username} has been promoted to Admin!', 'success')
+            return redirect(url_for('admin_dashboard'))
         else:
             flash('User not found.', 'danger')
-    return render_template('admin.html', title='Admin', form=form)
+    users = User.query.all()
+    properties = Property.query.all()
+    return render_template('admin_dashboard.html', title='Admin Dashboard', users=users, properties=properties, form=form)
 
 @app.route("/admin/users", methods=['GET'])
 @login_required
@@ -88,10 +82,54 @@ def login():
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form, button_text="Login")
 
-@app.route("/logout")
+@app.route('/logout')
+@login_required
 def logout():
     logout_user()
-    return redirect(url_for('home'))
+    flash('You have been logged out.', 'success')
+    return redirect(url_for('login'))
+
+@app.route("/admin/user/<int:user_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_user(user_id):
+    user = User.query.get_or_404(user_id)
+    if not current_user.is_admin:
+        abort(403)
+    form = UpdateUserForm()
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.email = form.email.data
+        user.is_admin = form.is_admin.data
+        db.session.commit()
+        flash('The user has been updated!', 'success')
+        return redirect(url_for('admin_dashboard'))
+    elif request.method == 'GET':
+        form.username.data = user.username
+        form.email.data = user.email
+        form.is_admin.data = user.is_admin
+    return render_template('admin_update_user.html', title='Admin Update User', form=form, user=user)
+
+@app.route("/admin/property/<int:property_id>/update", methods=['GET', 'POST'])
+@login_required
+def update_property(property_id):
+    property = Property.query.get_or_404(property_id)
+    if not current_user.is_admin:
+        abort(403)
+    form = UpdatePropertyForm()
+    if form.validate_on_submit():
+        property.title = form.title.data
+        property.description = form.description.data
+        property.price = form.price.data
+        property.location = form.location.data
+        db.session.commit()
+        flash('The property has been updated!', 'success')
+        return redirect(url_for('admin_dashboard'))
+    elif request.method == 'GET':
+        form.title.data = property.title
+        form.description.data = property.description
+        form.price.data = property.price
+        form.location.data = property.location
+    return render_template('admin_update_property.html', title='Admin Update Property', form=form, property=property)
 
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
@@ -147,6 +185,7 @@ def add_property():
 def property_detail(property_id):
     property = Property.query.get_or_404(property_id)
     return render_template('property.html', title=property.title, property=property)
+
 @app.route("/property/<int:property_id>/delete", methods=['POST'])
 @login_required
 def delete_property(property_id):
@@ -164,28 +203,6 @@ def properties():
     form = DeleteForm()
     return render_template('properties.html', title="Show all properties", properties=properties, form=form)
 
-@app.route("/property/<int:property_id>/update", methods=['GET', 'POST'])
-@login_required
-def update_property(property_id):
-    property = Property.query.get_or_404(property_id)
-    if property.owner != current_user:
-        abort(403)
-    form = PropertyForm()
-    if form.validate_on_submit():
-        property.title = form.title.data
-        property.description = form.description.data
-        property.price = form.price.data
-        property.location = form.location.data
-        db.session.commit()
-        flash('Your property has been updated!', 'success')
-        return redirect(url_for('property_detail', property_id=property.id))
-    elif request.method == 'GET':
-        form.title.data = property.title
-        form.description.data = property.description
-        form.price.data = property.price
-        form.location.data = property.location
-    return render_template('new_property.html', title='Update Property', form=form)
-
 @app.route("/search", methods=['GET', 'POST'])
 def search():
     form = SearchForm()
@@ -196,6 +213,7 @@ def search():
         # Query properties by location
         results = Property.query.filter(Property.location.ilike(f'%{search_location}%')).all()
     return render_template('search.html', form=form, results=results, search_location=search_location)
+
 @app.route('/compare', methods=['GET', 'POST'])
 def compare():
     properties = Property.query.all()
@@ -223,8 +241,6 @@ def reset_password():
         else:
             flash('No account found with that email.', 'warning')
     return render_template('reset_password.html', title='Reset Password', form=form)
-
-
 
 # @app.route("/export_csv")
 # @login_required

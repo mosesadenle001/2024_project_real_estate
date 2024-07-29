@@ -4,23 +4,21 @@ from flask_login import UserMixin
 from itsdangerous.url_safe import URLSafeTimedSerializer as Serializer
 from flask import current_app
 
-
 #Initialize all database models
 
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
     password = db.Column(db.String(60), nullable=False)
     properties = db.relationship('Property', backref='owner', lazy=True)
     is_admin = db.Column(db.Boolean, default=False, nullable=False)
-
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}',{self.properties}"
+        return f"User('{self.username}', '{self.email}',{self.properties}, '{self.image_file}')"
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
@@ -47,7 +45,8 @@ class Property(db.Model):
     location_id = db.Column(db.Integer, db.ForeignKey('location.id'), nullable=False)
     date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     property = db.relationship('Location', backref='properties', lazy=True)
-    #image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    image_file = db.Column(db.String(20), nullable=False, default='default.jpg')
+    is_admin = db.Column(db.Boolean, default=False, nullable=False)
     def __repr__(self):
         return f"Property('{self.title}', '{self.date_posted}')"
 
