@@ -39,3 +39,6 @@ def test_account_page(test_client, login_regular_user):
     response = test_client.get('/account', follow_redirects=True)
     assert response.status_code == 200
     assert b'Account' in response.data
+
+
+
