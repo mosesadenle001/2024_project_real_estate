@@ -1,0 +1,14 @@
+Flask
+Flask-Bcrypt
+Flask-Login
+Flask-WTF
+Flask-SQLAlchemy
+WTForms
+pytest
+pytest-flask
+sqlalchemy
+psycopg2-binary
+requests
+Werkzeug
+Flask-Mail
+email_validator

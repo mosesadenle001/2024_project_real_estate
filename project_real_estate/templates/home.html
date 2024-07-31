@@ -25,6 +25,7 @@
             {% endif %}
             <a href="{{ url_for('properties') }}">Properties</a>
             <a href="{{ url_for('add_property') }}">Add Property</a>
+
         </div>
     </nav>
     <div class="container">
@@ -34,7 +35,7 @@
                     <div class="alert {{ category }}">
                         <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                         <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-                        <img src="{{ url_for('static', filename='images/listingimg.png') }}" width="1400">
+                        <img src="{{ url_for('static', filename='images/listingimg.png') }}" width="1200" height="500" alt="Listing Image">
                         {{ message }}
                     </div>
                 {% endfor %}

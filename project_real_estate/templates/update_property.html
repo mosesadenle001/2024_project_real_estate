@@ -2,7 +2,7 @@
 {% block title %}Update Property{% endblock %}
 {% block content %}
 <h1>Update Property</h1>
-<form method="POST" action="" enctype="multipart/form-data">
+<form method="POST" action="{{ url_for('update_property', property_id=property.id) }}" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     <div class="form-group">
         {{ form.title.label(class="form-label") }}
@@ -21,8 +21,8 @@
         {{ form.description(class="form-control") }}
     </div>
     <div class="form-group">
-        {{ form.image_file.label(c_filass="form-label") }}
-        {{ form.imagele(class="form-cotrol-file") n}}
+        {{ form.image_file.label(class="form-label") }}
+        {{ form.image_file(class="form-control-file") }}
     </div>
     <button type="submit" class="btn btn-primary">Update</button>
 </form>

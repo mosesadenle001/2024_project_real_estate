@@ -102,11 +102,3 @@ class SearchForm(FlaskForm):
 class DeleteForm(FlaskForm):
     pass
 
-# class SubmitPropertiesForm(FlaskForm):
-#     title = StringField('Title', validators=[DataRequired()])
-#     location = StringField('Location', validators=[DataRequired()])
-#     price = DecimalField('Price', validators=[DataRequired()])
-#     bedrooms = IntegerField('Bedrooms', validators=[DataRequired()])
-#     bathrooms = IntegerField('Bathrooms', validators=[DataRequired()])
-#     description = TextAreaField('Description', validators=[DataRequired()])
-#     submit = SubmitField('Submit Properties')

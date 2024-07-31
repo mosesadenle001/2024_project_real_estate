@@ -1,14 +1,9 @@
-from flask import (render_template, url_for, flash, redirect, request,abort, jsonify)
+from flask import (render_template, url_for, flash, redirect, request,abort)
 from project_real_estate import db, bcrypt,app
-from project_real_estate.forms import PromoteUserForm, UpdateUserForm,UpdatePropertyForm, SearchForm, DeleteForm, RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, LocationForm
+from project_real_estate.forms import PromoteUserForm, UpdateUserForm, SearchForm, DeleteForm, RegistrationForm, CompareForm, LoginForm, RequestResetForm, UpdateAccountForm,PropertyForm, LocationForm
 from project_real_estate.models import User, Property,  Location
 from flask_login import login_user, current_user, logout_user, login_required
-# from werkzeug.utils import secure_filename
-# import os
-#import pandas as pd
-# from project_real_estate.utils import send_reset_email,save_picture
-# from utils import save_picture
-
+#import csv
 
 #Application Routes Configuration
 
@@ -50,7 +45,6 @@ def protected_route():
 def home():
     page = request.args.get('page', 1, type=int)
     props = Property.query.all()
-    #props = Property.query.order_by(Property.date_posted.desc()).paginate(page=page, per_page=5)
     return render_template('home.html', properties=props)
 
 @app.route("/register", methods=['GET', 'POST'])
@@ -131,8 +125,6 @@ def update_property(property_id):
         form.price.data = property.price
         form.location.data = property.location
     return render_template('admin_update_property.html', title='Admin Update Property', form=form, legend='Update Property')
-
-
 
 @app.route("/account", methods=['GET', 'POST'])
 @login_required
@@ -245,22 +237,21 @@ def reset_password():
             flash('No account found with that email.', 'warning')
     return render_template('reset_password.html', title='Reset Password', form=form)
 
-# @app.route("/export_csv")
+# @app.route("/export_properties_csv")
 # @login_required
-# def export_csv():
+# def export_properties_csv():
+#     if not current_user.is_admin:
+#         abort(403)
 #     properties = Property.query.all()
-#     data = [{
-#         'Title': property.title,
-#         'Description': property.description,
-#         'Price': property.price,
-#         'Location': property.location,
-#         'Date Posted': property.date_posted,
-#         'Owner': property.owner.username
-#     }
-#         for property in properties]
-#     df = pd.DataFrame(data)
-#     df.to_csv('properties.csv', index=False)
-#     flash('Properties have been exported to CSV!', 'success')
-#     return redirect(url_for('home'))
+#     # Create the response object as a CSV
+#     response = make_response()
+#     response.headers["Content-Disposition"] = "attachment; filename=properties.csv"
+#     response.headers["Content-Type"] = "text/csv"
 #
-#     mail.send(msg)
+#     # Write data to the CSV
+#     writer = csv.writer(response)
+#     writer.writerow(["Title", "Description", "Price", "Location", "Date Posted", "Owner"])
+#     for property in properties:
+#         writer.writerow([property.title, property.description, property.price, property.location, property.date_posted,
+#                          property.owner.username])
+#     return response
